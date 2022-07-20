@@ -1,16 +1,16 @@
-const axios = require("axios");
-const { expect } = require("chai");
-const { StatusCodes } = require("http-status-codes");
+const axios = require('axios');
+const { expect } = require('chai');
+const { StatusCodes } = require('http-status-codes');
 
-describe("First Api Tests", () => {
-  it("Consume GET Service", async () => {
-    const response = await axios.get("https://httpbin.org/ip");
+describe('First Api Tests', () => {
+  it('Consume GET Service', async () => {
+    const response = await axios.get('https://httpbin.org/ip');
 
     expect(response.status).to.equal(StatusCodes.OK);
-    expect(response.data).to.have.property("origin");
+    expect(response.data).to.have.property('origin');
   });
 
-  it("Consume GET Service with query parameters", async () => {
+  it('Consume GET Service with query parameters', async () => {
     const query = {
       name: 'John',
       age: 31,
@@ -32,37 +32,37 @@ describe("First Api Tests", () => {
       city: 'New York'
     };
 
-    const response = await axios.post('https://httpbin.org/post',query);
+    const response = await axios.post('https://httpbin.org/post', query);
 
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.data.json).to.eql(query);
   });
 
-  it("Consume HEAD Service", async () => {
+  it('Consume HEAD Service', async () => {
     const response = await axios.head('https://httpbin.org/headers');
 
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.headers).to.have.property('content-type', 'application/json');
-    expect(response.data).to.eql("");
+    expect(response.data).to.eql('');
   });
 
-  //PATCH
+  // PATCH
 
-  it("Consume PATCH Service with query parameters", async () => {
+  it('Consume PATCH Service with query parameters', async () => {
     const query = {
-      name: "John",
-      age: "31",
-      city: "New York",
+      name: 'John',
+      age: '31',
+      city: 'New York'
     };
-    const response = await axios.patch('https://httpbin.org/patch',query);
+    const response = await axios.patch('https://httpbin.org/patch', query);
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.data.json).to.eql(query);
   });
 
-  //PUT
+  // PUT
 
-  it("Consume PUT Service with query parameters", async () => {
-    const query =  {
+  it('Consume PUT Service with query parameters', async () => {
+    const query = {
       name: 'John',
       age: 31,
       city: 'New York'
@@ -74,17 +74,17 @@ describe("First Api Tests", () => {
     expect(response.data.json).to.eql(query);
   });
 
-  //DELETE
+  // DELETE
 
-  it("Consume DELETE Service with query parameters", async () => {
+  it('Consume DELETE Service with query parameters', async () => {
     const query = {
-      name: "John",
-      age: "31",
-      city: "New York",
+      name: 'John',
+      age: '31',
+      city: 'New York'
     };
 
-    const response = await axios.delete('https://httpbin.org/delete', {params: query});
+    const response = await axios.delete('https://httpbin.org/delete', { params: query });
     expect(response.status).to.equal(StatusCodes.OK);
-    expect(response.data.json).to.eql(null);;
+    expect(response.data.json).to.eql(null);
   });
 });
