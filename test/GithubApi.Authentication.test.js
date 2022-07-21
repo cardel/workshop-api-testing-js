@@ -1,6 +1,3 @@
-/*
-eslint linebreak-style: ["error", "windows"]
-*/
 const { StatusCodes } = require('http-status-codes');
 const { expect } = require('chai');
 const axios = require('axios');
