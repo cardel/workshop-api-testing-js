@@ -4,7 +4,7 @@ const { expect } = require('chai');
 describe('Get an authenticated user', async () => {
   let user;
   const url = 'https://api.github.com';
-  const repoObj = 'Cursos';
+  const repoObjName = 'Cursos';
   const authHeaders = {
     headers: {
       Authorization: `token ${process.env.ACCESS_TOKEN}`
@@ -18,33 +18,33 @@ describe('Get an authenticated user', async () => {
     expect(user.public_repos).to.be.above(0);
   });
   describe('Get all repos', async () => {
-    let repo;
+    let cursosRepoData;
     before(async () => {
       const response = await axios.get(user.repos_url, authHeaders);
-      repo = response.data.find((r) => r.name === repoObj);
+      cursosRepoData = response.data.find((r) => r.name === repoObjName);
     });
 
     it('We have de repository', async () => {
-      expect(repo).to.not.equal(undefined);
+      expect(cursosRepoData).to.not.equal(undefined);
     });
 
     describe('Create a new issue', async () => {
-      const issue = { title: 'A beautiful issue' };
-      const updatedIssue = { body: 'A nice body' };
-      let iss;
+      const issueCreationBody = { title: 'A beautiful issue' };
+      const issueUpdateBody = { body: 'A nice body' };
+      let createdIssueData;
 
       before(async () => {
         const response = await axios.post(
-          `${url}/repos/${user.login}/${repo.name}/issues`,
-          issue,
+          `${url}/repos/${user.login}/${cursosRepoData.name}/issues`,
+          issueCreationBody,
           authHeaders
         );
-        iss = response.data;
+        createdIssueData = response.data;
       });
       it('I Verify if the issue has been created', async () => {
-        expect(iss.id).to.not.equal(undefined);
-        expect(iss.title).to.equal(issue.title);
-        expect(iss.body).to.equal(null);
+        expect(createdIssueData.id).to.not.equal(undefined);
+        expect(createdIssueData.title).to.equal(issueCreationBody.title);
+        expect(createdIssueData.body).to.equal(null);
       });
 
       describe('I modify an issue', async () => {
@@ -52,15 +52,15 @@ describe('Get an authenticated user', async () => {
 
         before(async () => {
           const response = await axios.patch(
-            `${url}/repos/${user.login}/${repo.name}/issues/${iss.number}`,
-            updatedIssue,
+            `${url}/repos/${user.login}/${cursosRepoData.name}/issues/${createdIssueData.number}`,
+            issueUpdateBody,
             authHeaders
           );
           modifiedIssue = response.data;
         });
         it('Verify the modifcation', async () => {
-          expect(modifiedIssue.title).to.equal(issue.title);
-          expect(modifiedIssue.body).to.equal(updatedIssue.body);
+          expect(modifiedIssue.title).to.equal(issueCreationBody.title);
+          expect(modifiedIssue.body).to.equal(issueUpdateBody.body);
         });
       });
     });
